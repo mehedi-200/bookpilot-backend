@@ -199,14 +199,14 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 ## Feature 4 — Customers — `feature/customers`
 
 ### 4.1 API
-- [ ] `customers` migration/model (name, phone, email, notes, soft deletes) — unique phone per business
-- [ ] `apiResource /api/customers` + search `?q=` (name/phone) + paginated
-- [ ] `GET /api/customers/{id}` includes booking history + conversations (Resource nesting)
+- [x] `customers` migration/model (name, phone, email, notes, soft deletes) — unique phone per business
+- [x] `apiResource /api/customers` + search `?q=` (name/phone) + paginated
+- [x] `GET /api/customers/{id}` includes booking history + conversations (Resource nesting)
 
 ### 4.2 Frontend
-- [ ] Customers list per fixed UI + `customerService.js` + `useCustomers` hooks
-- [ ] Add/edit (Modal) + delete (ConfirmModal, soft delete)
-- [ ] Customer detail page (info card, bookings, conversations)
+- [x] Customers list per fixed UI + `customerService.js` + `useCustomers` hooks
+- [x] Add/edit (Modal) + delete (ConfirmModal, soft delete)
+- [x] Customer detail page (info card, bookings, conversations)
 
 ---
 
