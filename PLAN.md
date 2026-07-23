@@ -213,24 +213,24 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 ## Feature 5 — Bookings & Availability Engine — `feature/bookings` ⭐ core
 
 ### 5.1 API: availability engine
-- [ ] `AvailabilityService::slots(service_id, date)` = working hours − closed dates − existing bookings, slot size = service duration
-- [ ] `GET /api/availability?service_id&date` (used by dashboard AND agent tool)
-- [ ] Timezone-correct (business timezone), no past slots, configurable lead-time buffer
+- [x] `AvailabilityService::slots(service_id, date)` = working hours − closed dates − existing bookings, slot size = service duration
+- [x] `GET /api/availability?service_id&date` (used by dashboard AND agent tool)
+- [x] Timezone-correct (business timezone), no past slots, configurable lead-time buffer
 
 ### 5.2 API: bookings CRUD + status machine
-- [ ] `bookings` migration (customer_id, service_id, starts_at, ends_at, status, source: widget|manual, reference, notes)
-- [ ] BookingController (thin) → BookingService → BookingResource; Store/Update Requests
-- [ ] Reference generator `BP-YYYY-NNNN`; double-booking check inside DB transaction ⇒ 422
-- [ ] `PATCH /api/bookings/{id}/status` — transitions ONLY: Pending → Confirmed → Completed; Cancelled from Pending/Confirmed; invalid ⇒ `sendError(422)`
-- [ ] Index filters: status, service, date range, source + search `?q=` + paginated
+- [x] `bookings` migration (customer_id, service_id, starts_at, ends_at, status, source: widget|manual, reference, notes)
+- [x] BookingController (thin) → BookingService → BookingResource; Store/Update Requests
+- [x] Reference generator `BP-YYYY-NNNN`; double-booking check inside DB transaction ⇒ 422
+- [x] `PATCH /api/bookings/{id}/status` — transitions ONLY: Pending → Confirmed → Completed; Cancelled from Pending/Confirmed; invalid ⇒ `sendError(422)`
+- [x] Index filters: status, service, date range, source + search `?q=` + paginated
 
 ### 5.3 Frontend: bookings list & detail
-- [ ] Bookings page per fixed UI (status chips row, filters, search, Pagination, source icons)
-- [ ] Booking detail per fixed UI (status advance = single valid next step, cancel ConfirmModal)
+- [x] Bookings page per fixed UI (status chips row, filters, search, Pagination, source icons)
+- [x] Booking detail per fixed UI (status advance = single valid next step, cancel ConfirmModal)
 
 ### 5.4 Frontend: manual booking
-- [ ] New-booking flow per fixed UI: service → date → slot chips grid → customer (pick existing or create inline)
-- [ ] `bookingService.js` + `useBookings` / `useAvailability` hooks
+- [x] New-booking flow per fixed UI: service → date → slot chips grid → customer (pick existing or create inline)
+- [x] `bookingService.js` + `useBookings` / `useAvailability` hooks
 
 ---
 

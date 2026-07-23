@@ -48,5 +48,5 @@ customers
 - [x] API tests: CRUD, `?q=` matches partial name AND partial phone, duplicate phone 422 payload, findOrCreateByPhone idempotent under normalization ("+880 17..." == "017...")
 - [x] Duplicate-phone UX: creating an existing phone offers "Open profile" instead of a dead error
 - [x] Lookup autofill responds < 300ms feel (debounced)
-- [ ] Detail page loads one request (nested resource), skeletons while loading
+- [x] Detail page loads one request (nested resource), skeletons while loading
 - [ ] 3-theme + 3-breakpoint sweep

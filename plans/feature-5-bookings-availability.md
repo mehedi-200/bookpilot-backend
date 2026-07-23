@@ -66,9 +66,9 @@ Return grouped: `{ morning: [...], afternoon: [...], evening: [...] }` — the A
 4. FE list → detail → new-booking flow → reschedule.
 
 ## ✅ Check before closing the feature
-- [ ] Availability unit tests: normal day, closed day, closed_date, lead-time cutoff, spanning bookings, back-to-back (no gap loss), duration change, timezone edge (23:00 slot)
+- [x] Availability unit tests: normal day, closed day, closed_date, lead-time cutoff, spanning bookings, back-to-back (no gap loss), duration change, timezone edge (23:00 slot)
 - [ ] Concurrency test: two simultaneous creates for the same slot → exactly one succeeds
-- [ ] Every valid + invalid status transition tested (incl. terminal states)
+- [x] Every valid + invalid status transition tested (incl. terminal states)
 - [ ] Manual booking end-to-end < 30 seconds by hand — count the clicks; trim any step that isn't needed
 - [ ] Friendly-time util snapshot tests (Today/Tomorrow/date forms)
 - [ ] 3-theme + 3-breakpoint sweep (slot chips must be thumb-friendly on mobile)

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HealthController;
@@ -23,6 +25,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/business', [BusinessController::class, 'show']);
     Route::get('/services', [ServiceController::class, 'index']);
     Route::get('/working-hours', [WorkingHourController::class, 'index']);
+
+    Route::get('/availability', [AvailabilityController::class, 'index']);
+
+    Route::get('/bookings', [BookingController::class, 'index']);
+    Route::post('/bookings', [BookingController::class, 'store']);
+    Route::get('/bookings/{booking}', [BookingController::class, 'show']);
+    Route::patch('/bookings/{booking}/status', [BookingController::class, 'updateStatus']);
+    Route::patch('/bookings/{booking}/reschedule', [BookingController::class, 'reschedule']);
 
     Route::get('/customers/lookup', [CustomerController::class, 'lookup']);
     Route::get('/customers', [CustomerController::class, 'index']);
