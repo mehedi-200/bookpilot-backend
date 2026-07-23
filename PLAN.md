@@ -1,213 +1,301 @@
-# BookPilot — Development Plan
+# BookPilot — Full Development Plan
 
-> AI booking agent for small businesses. Laravel 13 API (Claude tool-calling) + React 19 SPA (chat widget + dashboard).
-> Workflow: `main` ← `develop` ← `feature/*`. One feature = one branch = one PR.
-> UI rules in [CLAUDE.md](CLAUDE.md) apply to every part below — no exceptions.
+> **BookPilot** — AI booking agent for small businesses. End-customers chat with a Claude-powered agent in an embeddable widget; the agent checks real availability and books appointments. Business owners manage everything from a dashboard. Confirmed bookings sync into GarageFlow as service jobs.
+>
+> **Stack:** Laravel 13 + Sanctum + MySQL + Claude API (tool-calling) · React 19 + Vite + TanStack Query + Tailwind CSS
+> **Workflow:** `main` ← `develop` ← `feature/*`. One feature = one branch = one PR into `develop`.
+> **Conventions in [CLAUDE.md](CLAUDE.md) apply to every part below — no exceptions.**
 
 **Progress legend:** `[ ]` pending · `[x]` done
 
 ---
 
-## Feature 0 — App Shell & Theme System — `feature/app-shell` (frontend)
+# 🎨 FIXED UI SPECIFICATION
 
-### Part 0A — Theme engine
-- [ ] CSS variable design tokens (colors, surfaces, borders, text) in `index.css`
-- [ ] Three themes: `dark` (DEFAULT), `light`, `reading` via root class
+This UI is **decided and locked**. Every feature below must follow it exactly — no per-page improvisation.
+
+## Design language
+- **Accent:** indigo (same as GarageFlow). Status colors: Pending = amber, Confirmed = indigo, Completed = green, Cancelled = red, Handed-off = purple. All via theme tokens.
+- **Themes:** `dark` (DEFAULT) · `light` · `reading` (sepia). CSS variables + root class, persisted in localStorage. No hardcoded colors ever.
+- **Surfaces:** rounded-xl cards, subtle borders, soft elevation. Tight spacing: `p-4` cards, `p-3` page gap.
+
+## Desktop layout (≥ lg)
+```
+┌────────────────────────────────────────────────────────┐
+│ ☰  BookPilot   [ Master search…  ]        🔔  👤       │  ← thin header
+├──────────┬─────────────────────────────────────────────┤
+│ Dashboard│                                             │
+│ Bookings │              page content                   │
+│ Convers. │        (p-3 gap on all sides)               │
+│ Customers│                                             │
+│ Services │                                             │
+│ Settings │                                             │
+├──────────┴─────────────────────────────────────────────┤
+│                    thin footer                          │
+└────────────────────────────────────────────────────────┘
+```
+- Sidebar: **Dashboard · Bookings · Conversations · Customers · Services · Staff · Integrations · Settings** (Staff/Integrations/Settings = admin only). Collapsible to icons-only — toggled ONLY by the ☰ hamburger beside the logo; state persisted.
+- List pages: **no title band** (`bare` page) — table starts at top with attached toolbar: primary action (Add …) LEFT, search/filters right-aligned (`md:ml-auto`).
+- Detail pages: compact `← Title` back row, never a floating title.
+
+## Mobile / tablet layout (< lg) — native-app experience
+```
+┌──────────────────────────┐
+│  Page Title      🔍 🔔   │  ← app top bar (per page)
+│                          │
+│    full-screen content   │
+│    (rounded cards)       │
+│                          │
+├──────────────────────────┤
+│  🏠    📅    💬    ⋯     │  ← bottom nav
+└──────────────────────────┘
+```
+- Bottom nav: **Dashboard · Bookings · Conversations · More** (More = full-screen sheet with remaining pages, filtered by role).
+- 44×44px minimum touch targets, card lists instead of tables, full-screen sheets instead of dropdowns.
+
+## Shared components (build once in Feature 1, reuse everywhere)
+`Button` (primary/secondary/danger/icon) · `Input` `Select` `Textarea` (RHF-compatible) · `Card` · `Modal` (desktop) / bottom-sheet (mobile) · `DataList` (table on desktop, cards on mobile, `toolbar` prop) · `Pagination` (the exact approved design — rounded bar, circular indigo refresh, `Showing [N] entries` badge, `Show [size]`, `‹Previous · squares · Next›`; compact app variant on mobile) · `StatusChip` · `EmptyState` · `Spinner` · `PageHeader` · `ConfirmModal`.
+
+## Page inventory (fixed UI per page)
+| Page | Fixed UI |
+|---|---|
+| Login | Centered card (desktop) / full-screen app view (mobile), logo, email+password, error banner |
+| Dashboard | 4 stat cards row (Bookings today · This week · Pending · Active conversations) → Upcoming bookings list → AI vs manual bookings breakdown |
+| Bookings | DataList: Ref, Customer, Service, Date/time, Source (🤖/✋), StatusChip · toolbar: **+ New booking** left; status chips + service/date filters + search right · Pagination |
+| Booking detail | `← Booking #ref` row · info card (customer, service, time, source, notes) · status advance button (only the single valid next step) · Cancel (ConfirmModal) · GarageFlow sync chip |
+| New booking | Modal (desktop) / full page (mobile): service select → date → **slot chips grid** (from availability API) → customer fields |
+| Conversations | DataList: Customer, Started, Last message preview, Bookings made, StatusChip (active/ended/handed-off) · filters + search · Pagination |
+| Conversation detail | `←` row · chat transcript: user bubbles right, agent bubbles left, **tool calls as small collapsible system rows** (e.g. `🔧 check_availability`) · linked booking chips · handoff banner |
+| Customers | DataList: Name, Phone, Email, Bookings count · **+ Add customer** · search · Pagination |
+| Customer detail | `←` row · info card · booking history list · conversations list |
+| Services | DataList: Name, Duration, Price, Active toggle · **+ Add service** · Pagination · add/edit in Modal |
+| Staff (admin) | DataList of users with role badge · **+ Add staff** · Pagination |
+| Settings | Tabs: **Business** (profile form + timezone) · **Working hours** (7-day grid, per-day open/close/closed toggle + closed-dates list) · **Widget** (embed snippet + copy button, widget key show/regenerate) |
+| Integrations (admin) | GarageFlow card: URL + token form, **Test connection**, enable/disable switch, last-sync status |
+| Profile | Info edit + password change + theme switcher (3 theme preview cards) |
+| Notifications | Bell + unread badge → dropdown panel (desktop) / full-screen sheet (mobile), mark-as-read |
+| Master search | Header bar (desktop) / 🔍 full-screen page (mobile): debounced grouped results — Bookings · Customers · Conversations |
+
+## Chat widget UI (public, embeddable — fixed)
+- Floating circular launcher bottom-right (business-configurable side later — v1 fixed right).
+- Panel ~380×600 desktop, **full-screen sheet on mobile**. Header: business name + "AI booking assistant" + close. Isolated styles (Shadow DOM or prefixed reset) — never inherits host page CSS.
+- Message list (agent left / user right), typing indicator (3 bouncing dots), **slot-picker quick-reply chips**, **booking confirmation card** (service · date/time · reference, green check).
+- Widget themes: light + dark only, auto via `prefers-color-scheme`.
+
+---
+
+# FEATURES
+
+## Feature 0 — Project Scaffolding — `feature/project-setup`
+
+### 0.1 Backend scaffold
+- [ ] Laravel 13 new project, MySQL database `bookpilot`, `.env.example` committed
+- [ ] Sanctum installed + configured (SPA token auth), CORS for frontend origin
+- [ ] `ApiResponse` trait (`sendSuccess` / `sendError`) + base folder structure (`Services/`, `Requests/`, `Resources/`)
+- [ ] Global exception handler returns JSON via ApiResponse shape (404/422/500)
+
+### 0.2 Frontend scaffold
+- [ ] Vite + React 19 + Tailwind CSS, path aliases, ESLint/Prettier
+- [ ] Axios instance in `services/api.js` (base URL from env, auth + 401 interceptors)
+- [ ] TanStack Query provider + React Router + React Hook Form installed
+- [ ] Folder structure per CLAUDE.md (`components/ pages/ widget/ services/ hooks/ utils/`)
+
+---
+
+## Feature 1 — App Shell, Themes & Component Library — `feature/app-shell` (frontend)
+
+### 1.1 Theme engine
+- [ ] Design tokens as CSS variables in `index.css` (bg, surface, border, text, accent, status colors)
+- [ ] Three themes via root class: `dark` (DEFAULT) · `light` · `reading`
 - [ ] `useTheme` hook + localStorage persistence
-- [ ] No hardcoded colors anywhere — tokens only
 
-### Part 0B — Core component library (`src/components/`)
-- [ ] Button (variants: primary / secondary / danger / icon)
-- [ ] Input, Select, Textarea (React Hook Form compatible)
-- [ ] Card, Modal, EmptyState, Spinner, StatusChip
-- [ ] Table (desktop) / ListView cards (mobile) — one data-list component, two renders
-- [ ] **Pagination** — exact approved design: rounded bar, circular indigo refresh button, `Showing [N] entries` badge, `Show [size]` input, `‹Previous · pages (active = solid indigo square) · Next›`; compact app-style variant on mobile
+### 1.2 Component library
+- [ ] Button, Input, Select, Textarea (RHF-compatible)
+- [ ] Card, Modal (+ mobile bottom-sheet render), ConfirmModal, EmptyState, Spinner, StatusChip, PageHeader
+- [ ] DataList — one component: table ≥lg / cards <lg, `toolbar` prop
+- [ ] Pagination — the exact fixed design (desktop bar + compact mobile variant)
 
-### Part 0C — Desktop layout
-- [ ] Thin header: master search bar + notification bell + profile menu
-- [ ] Thin collapsible sidebar (icons-only when collapsed, state persisted)
-- [ ] Thin footer
+### 1.3 Desktop chrome
+- [ ] Thin header: ☰ + logo, master search bar, bell, profile menu
+- [ ] Collapsible thin sidebar (icons-only collapsed, persisted), thin footer
 
-### Part 0D — Mobile / tablet native-app layout
-- [ ] Bottom navigation bar (Dashboard, Bookings, Conversations, Services, More)
+### 1.4 Mobile chrome
+- [ ] Bottom nav (Dashboard · Bookings · Conversations · More) + More sheet
 - [ ] App-style top bar per page (title + contextual actions)
-- [ ] Full-screen card-based pages, 44px touch targets
 
-### Part 0E — Routing skeleton
-- [ ] React Router routes for all pages (placeholder pages)
-- [ ] `<AppLayout>` switching chrome by breakpoint
-- [ ] `<ProtectedRoute>` wrapper (redirects to /login)
+### 1.5 Routing skeleton
+- [ ] All routes with placeholder pages, `<AppLayout>` switching by breakpoint, `<ProtectedRoute>`
 
 ---
 
-## Feature 1 — Authentication & Profile — `feature/authentication`
+## Feature 2 — Authentication & Accounts — `feature/authentication`
 
-### Part 1A — API: auth endpoints
-- [ ] `users` table: add `role` (admin|staff), seeder for first admin
-- [ ] `POST /api/login`, `POST /api/logout` — `AuthController` → `LoginRequest` → `AuthService` → `UserResource` → `ApiResponse`
-- [ ] Role middleware (`admin` only routes)
+### 2.1 API: auth
+- [ ] `users.role` (admin|staff) migration + first-admin seeder
+- [ ] `POST /api/login` · `POST /api/logout` — AuthController → LoginRequest → AuthService → UserResource
+- [ ] `role:admin` middleware for admin route groups
 
-### Part 1B — API: profile & staff accounts
-- [ ] `GET/PUT /api/profile` (`UpdateProfileRequest`, password change)
-- [ ] Admin CRUD for staff accounts (`StoreUserRequest`)
+### 2.2 API: profile & staff
+- [ ] `GET/PUT /api/profile` (UpdateProfileRequest, optional password change)
+- [ ] Admin CRUD `/api/users` for staff accounts (StoreUserRequest/UpdateUserRequest, paginated)
 
-### Part 1C — Frontend: auth flow
-- [ ] Login page (app-style on mobile)
-- [ ] `authService.js` + `useAuth` hook, token storage, 401 auto-logout (Axios interceptor)
-- [ ] ProtectedRoute wired to real auth state
+### 2.3 Frontend: auth flow
+- [ ] Login page per fixed UI, `authService.js` + `useAuth`, token storage, 401 auto-logout
+- [ ] ProtectedRoute + role-based menu filtering (admin-only items hidden for staff)
 
-### Part 1D — Frontend: profile & settings
-- [ ] Profile page (view/edit, password change)
-- [ ] Profile dropdown in header: profile / theme switcher / logout
-- [ ] Staff management page (admin only)
+### 2.4 Frontend: profile & staff pages
+- [ ] Profile page (edit, password, theme switcher cards)
+- [ ] Staff page (admin): DataList + add/edit/delete via Modal
 
 ---
 
-## Feature 2 — Business Setup — `feature/business-setup`
+## Feature 3 — Business Setup — `feature/business-setup`
 
-### Part 2A — API: business profile
-- [ ] Migration + `Business` model (name, slug, phone, email, address, timezone, widget_key)
-- [ ] `GET/PUT /api/business` — thin controller → `BusinessService` → `BusinessResource`
-- [ ] Widget key generator + regenerate endpoint (admin only)
+### 3.1 API: business profile & widget key
+- [ ] `businesses` migration/model (name, slug, phone, email, address, timezone, widget_key)
+- [ ] `GET/PUT /api/business` → BusinessService → BusinessResource
+- [ ] `POST /api/business/widget-key/regenerate` (admin)
 
-### Part 2B — API: services & working hours
-- [ ] Migration + `Service` model (name, duration_minutes, price, active, soft deletes) — `apiResource /api/services` + Form Requests + paginated index
-- [ ] Migration + `WorkingHour` model (day_of_week, open/close, closed flag) + `closed_dates` (holidays)
-- [ ] `GET/PUT /api/working-hours` via `WorkingHourService`
+### 3.2 API: services catalog
+- [ ] `services` migration/model (name, duration_minutes, price, active, soft deletes)
+- [ ] `apiResource /api/services` + Store/Update Requests + paginated index + active filter
 
-### Part 2C — Frontend: settings pages
-- [ ] Business profile page (edit form + widget key display/copy/regenerate)
-- [ ] Services page: Table/cards + add/edit/delete (confirm Modal, soft delete) + shared Pagination
-- [ ] Working hours editor (per-day open/close/closed) + closed dates list
+### 3.3 API: working hours & closed dates
+- [ ] `working_hours` (day_of_week, open, close, is_closed) + `closed_dates` (date, reason)
+- [ ] `GET/PUT /api/working-hours` + closed-dates CRUD via WorkingHourService
 
----
-
-## Feature 3 — Bookings & Availability — `feature/bookings`
-
-### Part 3A — API: bookings CRUD
-- [ ] Migrations: `customers` (name, phone, email) + `bookings` (customer_id, service_id, starts_at, ends_at, status, source: widget|manual, notes)
-- [ ] `BookingController` (thin) → `BookingService` → `BookingResource` + Form Requests
-- [ ] Filters: status, service, date range; search (`?q=` customer name/phone); paginated index
-
-### Part 3B — API: availability engine + status machine
-- [ ] `GET /api/availability?service_id&date` — free slots computed in `AvailabilityService` from working hours − existing bookings − closed dates
-- [ ] `PATCH /api/bookings/{id}/status` — transitions enforced in `BookingService`: Pending → Confirmed → Completed only; Cancelled allowed from Pending/Confirmed
-- [ ] Invalid transition or double-booked slot ⇒ `sendError(422)`
-
-### Part 3C — Frontend: bookings list
-- [ ] Bookings page: status filter chips + service/date filters + search + Pagination
-- [ ] StatusChip colors per status (theme tokens)
-- [ ] Day/week calendar strip view (upcoming bookings)
-
-### Part 3D — Frontend: create booking + detail
-- [ ] Manual booking form: service select → available slots load → customer info
-- [ ] Booking detail page: info, status advance button (only valid next step shown), cancel with confirm Modal
+### 3.4 Frontend: settings pages
+- [ ] Settings → Business tab (form + timezone select)
+- [ ] Settings → Working hours tab (7-day grid + closed-dates list)
+- [ ] Settings → Widget tab (embed snippet, copy button, key regenerate with ConfirmModal)
+- [ ] Services page per fixed UI (DataList + Modal forms + active toggle)
 
 ---
 
-## Feature 4 — AI Agent (Claude tool-calling) — `feature/ai-agent` ⭐ core
+## Feature 4 — Customers — `feature/customers`
 
-### Part 4A — API: conversation storage
-- [ ] Migrations: `conversations` (customer info captured, channel, status: active|ended|handed_off) + `messages` (conversation_id, role: user|assistant|tool, content, tool payload JSON)
-- [ ] `ConversationController` (thin, dashboard read-only) → `ConversationService` → Resources; paginated index + detail with messages
+### 4.1 API
+- [ ] `customers` migration/model (name, phone, email, notes, soft deletes) — unique phone per business
+- [ ] `apiResource /api/customers` + search `?q=` (name/phone) + paginated
+- [ ] `GET /api/customers/{id}` includes booking history + conversations (Resource nesting)
 
-### Part 4B — API: Claude agent loop
-- [ ] `AgentService`: Claude API (model `claude-sonnet-5`) tool-use loop — send history + tools, execute requested tool, return result, repeat until final text
-- [ ] Tools (each delegates to existing Services): `list_services`, `check_availability`, `create_booking`, `reschedule_booking`, `cancel_booking`, `handoff_to_human`
-- [ ] System prompt built from business profile + working hours (name, tone, guardrails: booking topics only, never invent slots)
-- [ ] Config: API key in `.env` / `config/bookpilot.php`; token + error handling ⇒ graceful `sendError`
-
-### Part 4C — API: public chat endpoints (widget)
-- [ ] `POST /api/widget/chat` (public, widget_key auth middleware + rate limiting) — message in → agent reply out, conversation persisted
-- [ ] `GET /api/widget/bootstrap` — business name, services, hours for widget header
-
-### Part 4D — Frontend: conversations in dashboard
-- [ ] Conversations page: list (status filter + search + Pagination)
-- [ ] Conversation detail: chat transcript view (user/assistant/tool events), linked booking chips, handoff badge
+### 4.2 Frontend
+- [ ] Customers list per fixed UI + `customerService.js` + `useCustomers` hooks
+- [ ] Add/edit (Modal) + delete (ConfirmModal, soft delete)
+- [ ] Customer detail page (info card, bookings, conversations)
 
 ---
 
-## Feature 5 — Chat Widget — `feature/chat-widget`
+## Feature 5 — Bookings & Availability Engine — `feature/bookings` ⭐ core
 
-### Part 5A — Widget build
-- [ ] Separate Vite entry `src/widget/` → single embeddable JS bundle + `<script>` snippet with `data-widget-key`
-- [ ] Floating launcher button → chat panel (mobile: full-screen sheet)
+### 5.1 API: availability engine
+- [ ] `AvailabilityService::slots(service_id, date)` = working hours − closed dates − existing bookings, slot size = service duration
+- [ ] `GET /api/availability?service_id&date` (used by dashboard AND agent tool)
+- [ ] Timezone-correct (business timezone), no past slots, configurable lead-time buffer
 
-### Part 5B — Widget chat UI
-- [ ] Message list, typing indicator, quick-reply chips for slot picking
-- [ ] Booking confirmation card in-chat (service, time, reference)
-- [ ] Widget theme: self-contained tokens (light + dark), isolated styles — never leaks into or inherits from the host page
+### 5.2 API: bookings CRUD + status machine
+- [ ] `bookings` migration (customer_id, service_id, starts_at, ends_at, status, source: widget|manual, reference, notes)
+- [ ] BookingController (thin) → BookingService → BookingResource; Store/Update Requests
+- [ ] Reference generator `BP-YYYY-NNNN`; double-booking check inside DB transaction ⇒ 422
+- [ ] `PATCH /api/bookings/{id}/status` — transitions ONLY: Pending → Confirmed → Completed; Cancelled from Pending/Confirmed; invalid ⇒ `sendError(422)`
+- [ ] Index filters: status, service, date range, source + search `?q=` + paginated
 
----
+### 5.3 Frontend: bookings list & detail
+- [ ] Bookings page per fixed UI (status chips row, filters, search, Pagination, source icons)
+- [ ] Booking detail per fixed UI (status advance = single valid next step, cancel ConfirmModal)
 
-## Feature 6 — GarageFlow Integration — `feature/garageflow-integration`
-
-### Part 6A — API
-- [ ] `integrations` table (provider: garageflow, base_url, api_token, enabled)
-- [ ] `GarageFlowService`: on booking Confirmed → find/create GarageFlow customer + vehicle → create service job; store remote IDs on booking
-- [ ] Connection test endpoint + sync failure handling (booking keeps `sync_status`, retry endpoint)
-
-### Part 6B — Frontend
-- [ ] Integration settings page: connect form (URL + token), test connection, enable/disable
-- [ ] Booking detail: GarageFlow sync status chip + link/retry action
+### 5.4 Frontend: manual booking
+- [ ] New-booking flow per fixed UI: service → date → slot chips grid → customer (pick existing or create inline)
+- [ ] `bookingService.js` + `useBookings` / `useAvailability` hooks
 
 ---
 
-## Feature 7 — Dashboard — `feature/dashboard`
+## Feature 6 — AI Agent (Claude tool-calling) — `feature/ai-agent` ⭐ core
 
-### Part 7A — API
-- [ ] `GET /api/dashboard` — totals: bookings today / this week, pending confirmations, active conversations, AI-booked % (month) — single `DashboardService`
-- [ ] Upcoming bookings + bookings-by-status counts in same response
+### 6.1 API: conversation storage
+- [ ] `conversations` (customer_name/phone captured, status: active|ended|handed_off, last_activity_at) + `messages` (role: user|assistant|tool, content, tool_name, tool_payload JSON)
+- [ ] Dashboard read endpoints: paginated index + detail with full transcript (ConversationResource)
 
-### Part 7B — Frontend
-- [ ] Stat cards grid (responsive, theme-aware)
-- [ ] Upcoming bookings list + status breakdown
-- [ ] Dashboard is the post-login landing page
+### 6.2 API: agent core
+- [ ] `AgentService`: Claude API loop (model `claude-sonnet-5`) — history + tool defs → execute requested tool → feed result back → repeat until final text; max-iteration cap
+- [ ] Tools delegate to existing Services: `list_services` · `check_availability` · `create_booking` · `reschedule_booking` · `cancel_booking` · `handoff_to_human`
+- [ ] System prompt from business profile + hours; guardrails: booking topics only, never invent slots, always confirm before booking
+- [ ] `config/bookpilot.php` (API key from `.env`, model, max tokens); API errors ⇒ graceful fallback message + logged
 
----
+### 6.3 API: public widget endpoints
+- [ ] `widget_key` auth middleware + per-conversation rate limiting (throttle)
+- [ ] `POST /api/widget/chat` (message + conversation token → agent reply), `GET /api/widget/bootstrap` (business name, services, hours)
 
-## Feature 8 — Master Search — `feature/dashboard` (same branch)
-
-### Part 8A — API
-- [ ] `GET /api/search?q=` → grouped results (bookings, customers, conversations) via `SearchService`
-
-### Part 8B — Frontend
-- [ ] Header search bar: debounced dropdown with grouped results → navigate to detail
-- [ ] Mobile: search icon in top bar → full-screen app-style search page
+### 6.4 Frontend: conversations pages
+- [ ] Conversations list per fixed UI + `conversationService.js` + hooks
+- [ ] Conversation detail: transcript with collapsible tool-call rows, linked booking chips, handoff banner
 
 ---
 
-## Feature 9 — Notifications — `feature/dashboard` (same branch)
+## Feature 7 — Embeddable Chat Widget — `feature/chat-widget`
 
-### Part 9A — API
-- [ ] `notifications` table + endpoints: list (paginated), unread count, mark read
-- [ ] Triggers in Services: new AI booking (→ admin/staff), booking cancelled, conversation handed off to human, GarageFlow sync failed
+### 7.1 Widget build & embed
+- [ ] Separate Vite entry `src/widget/` → single JS bundle; embed: `<script src=".../widget.js" data-widget-key="…">`
+- [ ] Style isolation (Shadow DOM/prefixed reset); light+dark via `prefers-color-scheme`
 
-### Part 9B — Frontend
-- [ ] Bell + unread badge in header / app top bar
-- [ ] Notification panel (dropdown desktop / full-screen sheet mobile), mark-as-read
-- [ ] Poll with TanStack Query refetch interval
+### 7.2 Widget UI & chat flow
+- [ ] Launcher + panel per fixed widget UI (full-screen sheet on mobile)
+- [ ] Message list, typing indicator, error retry state
+- [ ] Slot-picker quick-reply chips + booking confirmation card
+- [ ] Conversation token persisted (localStorage) so refresh resumes the chat
+
+---
+
+## Feature 8 — GarageFlow Integration — `feature/garageflow-integration`
+
+### 8.1 API
+- [ ] `integrations` table (provider, base_url, api_token encrypted, enabled)
+- [ ] `GarageFlowService`: on booking → Confirmed: find/create customer + vehicle in GarageFlow → create service job; store remote IDs + `sync_status` on booking
+- [ ] `POST /api/integrations/garageflow/test` + retry-sync endpoint; failures logged, never block the booking
+
+### 8.2 Frontend
+- [ ] Integrations page per fixed UI (form, test connection, enable switch, last-sync)
+- [ ] Booking detail: sync StatusChip + retry action
+
+---
+
+## Feature 9 — Dashboard, Search & Notifications — `feature/dashboard`
+
+### 9.1 API: dashboard
+- [ ] `GET /api/dashboard` (single DashboardService): bookings today/week, pending count, active conversations, AI-booked % (month), upcoming bookings, bookings-by-status
+
+### 9.2 API: master search
+- [ ] `GET /api/search?q=` → grouped: bookings (ref/customer), customers, conversations — SearchService
+
+### 9.3 API: notifications
+- [ ] `notifications` table + list (paginated) / unread-count / mark-read endpoints
+- [ ] Triggers in Services: new AI booking, booking cancelled, handoff to human, GarageFlow sync failed
+
+### 9.4 Frontend
+- [ ] Dashboard page per fixed UI (stat cards, upcoming list, AI/manual breakdown); post-login landing
+- [ ] Master search: debounced grouped dropdown (desktop) / full-screen page (mobile)
+- [ ] Bell + badge, notification panel/sheet, mark-as-read, TanStack Query polling
 
 ---
 
 ## Feature 10 — Quality & Release — `refactor/*` → `main`
 
-### Part 10A — Tests (API)
+### 10.1 API tests
 - [ ] Auth: login, role access
-- [ ] Availability engine: hours, overlaps, closed dates, double-booking rejection
+- [ ] Availability: hours/closed-dates/overlaps, double-booking rejected, timezone edges
 - [ ] Booking status machine: every valid + invalid transition
-- [ ] Agent tools: each tool executes + agent loop with mocked Claude responses
-- [ ] Widget endpoints: widget_key auth + rate limiting
+- [ ] Agent: each tool executes correctly; loop tested with mocked Claude responses; guardrail (invented slot) rejected
+- [ ] Widget endpoints: widget_key auth + rate limit
 
-### Part 10B — CI & data
-- [ ] GitHub Actions: run tests on push/PR + README badges
-- [ ] Seeders: 1 admin, 2 staff, business + hours, ~8 services, ~15 customers, ~40 bookings (all statuses), sample conversations
+### 10.2 CI & seed data
+- [ ] GitHub Actions: tests on push/PR + README badges
+- [ ] Seeders: 1 admin, 2 staff, business + hours, 8 services, 15 customers, 40 bookings (all statuses/sources), 10 conversations with transcripts
 
-### Part 10C — Release
-- [ ] README screenshots (desktop + mobile, all 3 themes) + widget embed guide
+### 10.3 Release
+- [ ] README: screenshots (desktop + mobile, all 3 themes) + widget embed guide + GarageFlow setup guide
 - [ ] Final review, merge `develop` → `main`, tag `v1.0.0`
 
 ---
 
-## Out of scope for v1 (planned v2 — open as GitHub issues)
-Multi-business/multi-tenant SaaS · public registration · password-reset emails · SMS/email reminders to customers · voice channel · WhatsApp/Messenger channels · payments & deposits · staff-level calendars/resources · streaming agent responses · CSV import/export · real-time websockets · charts library · E2E tests
+## Out of scope for v1 (v2 — open as GitHub issues)
+Multi-tenant SaaS · public registration · password-reset emails · SMS/WhatsApp/email reminders · voice channel · payments & deposits · staff-level calendars/resources · streaming agent responses · widget position/branding config · CSV import/export · websockets (real-time) · charts library · E2E tests
