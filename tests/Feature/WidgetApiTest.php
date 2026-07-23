@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Business;
 use App\Models\Conversation;
 use App\Models\Service;
+use App\Models\User;
 use Database\Seeders\BusinessSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -230,13 +231,13 @@ class WidgetApiTest extends TestCase
 
         $this->getJson('/api/conversations')->assertStatus(401);
 
-        $this->actingAs(\App\Models\User::factory()->create())
+        $this->actingAs(User::factory()->create())
             ->getJson('/api/conversations')
             ->assertOk()
             ->assertJsonPath('data.meta.total', 1)
             ->assertJsonPath('data.data.0.preview', 'Hi there');
 
-        $this->actingAs(\App\Models\User::factory()->create())
+        $this->actingAs(User::factory()->create())
             ->getJson('/api/conversations/'.Conversation::first()->id)
             ->assertOk()
             ->assertJsonCount(2, 'data.messages')

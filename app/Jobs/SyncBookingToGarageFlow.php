@@ -13,9 +13,7 @@ class SyncBookingToGarageFlow implements ShouldQueue
 
     public int $tries = 3;
 
-    public function __construct(public readonly int $bookingId)
-    {
-    }
+    public function __construct(public readonly int $bookingId) {}
 
     /** 1 min, then 5, then 15 — a brief GarageFlow outage sorts itself out. */
     public function backoff(): array

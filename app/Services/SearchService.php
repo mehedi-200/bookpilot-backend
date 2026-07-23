@@ -14,6 +14,7 @@ use App\Support\PhoneNumber;
 class SearchService
 {
     private const LIMIT = 5;
+
     private const MIN_LENGTH = 2;
 
     public function search(string $term): array

@@ -13,9 +13,7 @@ class BusinessController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly BusinessService $businessService)
-    {
-    }
+    public function __construct(private readonly BusinessService $businessService) {}
 
     public function show(): JsonResponse
     {

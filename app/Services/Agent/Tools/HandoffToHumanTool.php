@@ -33,9 +33,7 @@ class HandoffToHumanTool implements AgentTool
         ];
     }
 
-    public function __construct(private readonly NotificationService $notifications)
-    {
-    }
+    public function __construct(private readonly NotificationService $notifications) {}
 
     public function execute(array $input, Conversation $conversation): array
     {

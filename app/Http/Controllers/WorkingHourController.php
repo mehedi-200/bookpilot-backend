@@ -15,9 +15,7 @@ class WorkingHourController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly WorkingHourService $workingHourService)
-    {
-    }
+    public function __construct(private readonly WorkingHourService $workingHourService) {}
 
     public function index(): JsonResponse
     {

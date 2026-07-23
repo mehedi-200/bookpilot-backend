@@ -19,25 +19,25 @@
 ## Sub-features
 
 ### 10.1 CI
-- [ ] GitHub Actions (both repos): backend — php setup, mysql service, `php artisan test`; frontend — `npm ci`, lint, `npm run build` + `build:widget`
-- [ ] Badges in both READMEs; branch protection: PRs into `develop` require green CI
+- [x] GitHub Actions (both repos): backend — php setup, mysql service, `php artisan test`; frontend — `npm ci`, lint, `npm run build` + `build:widget`
+- [x] Badges in both READMEs; branch protection: PRs into `develop` require green CI
 
 ### 10.2 Seed data (demo-quality, not lorem)
-- [ ] 1 admin + 2 staff · business "Rahim's Garage" with realistic hours (Fri closed) · 8 services with real names/prices
-- [ ] 15 customers (realistic BD names/phones) · 40 bookings spread over ±3 weeks, all statuses & both sources · 10 conversations with believable transcripts incl. tool calls, 1 handed-off · notifications sampling every type
-- [ ] `php artisan migrate:fresh --seed` = instant demo environment
+- [x] 1 admin + 2 staff · business "Rahim's Garage" with realistic hours (Fri closed) · 8 services with real names/prices
+- [x] 15 customers (realistic BD names/phones) · 40 bookings spread over ±3 weeks, all statuses & both sources · 10 conversations with believable transcripts incl. tool calls, 1 handed-off · notifications sampling every type
+- [x] `php artisan migrate:fresh --seed` = instant demo environment
 
 ### 10.3 Polish pass (the "check it properly" sweep — do this BEFORE screenshots)
-- [ ] Click through every page × 3 themes × 3 breakpoints; fix every EmptyState, Skeleton, overflow, and spacing miss against CLAUDE.md rule 8
-- [ ] Loading: no layout jumps (skeleton dimensions = content dimensions); Errors: every mutation shows a toast, every failed list shows retry
-- [ ] Friendly-time util used everywhere (no raw `2026-07-23 10:30:00` anywhere in the UI)
+- [x] Click through every page × 3 themes × 3 breakpoints; fix every EmptyState, Skeleton, overflow, and spacing miss against CLAUDE.md rule 8
+- [x] Loading: no layout jumps (skeleton dimensions = content dimensions); Errors: every mutation shows a toast, every failed list shows retry
+- [x] Friendly-time util used everywhere (no raw `2026-07-23 10:30:00` anywhere in the UI)
 - [ ] Lighthouse mobile pass on dashboard + bookings (no red scores); widget bundle budget re-checked
-- [ ] `npm run lint` + `pint` clean; dead code and unused deps removed
+- [x] `npm run lint` + `pint` clean; dead code and unused deps removed
 
 ### 10.4 Docs & release
-- [ ] Backend README: install, `.env` keys explained, queue worker note, seeding, API overview table
-- [ ] Frontend README: install, env, dashboard + widget builds, **widget embed guide** (copy-paste snippet + troubleshooting)
-- [ ] GarageFlow setup guide (getting a token, connecting, what syncs)
+- [x] Backend README: install, `.env` keys explained, queue worker note, seeding, API overview table
+- [x] Frontend README: install, env, dashboard + widget builds, **widget embed guide** (copy-paste snippet + troubleshooting)
+- [x] GarageFlow setup guide (getting a token, connecting, what syncs)
 - [ ] Screenshots: desktop + mobile, all 3 themes (dashboard, bookings, conversation transcript, widget)
 - [ ] Open v2 backlog as GitHub issues (from the out-of-scope list)
 - [ ] Merge `develop` → `main` in both repos, tag `v1.0.0`

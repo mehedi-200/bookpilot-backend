@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Booking;
 use App\Models\Conversation;
-use App\Models\Customer;
 use App\Models\Notification;
 use App\Models\Service;
 use App\Models\User;

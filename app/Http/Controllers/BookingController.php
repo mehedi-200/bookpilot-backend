@@ -16,9 +16,7 @@ class BookingController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly BookingService $bookings)
-    {
-    }
+    public function __construct(private readonly BookingService $bookings) {}
 
     public function index(Request $request): JsonResponse
     {

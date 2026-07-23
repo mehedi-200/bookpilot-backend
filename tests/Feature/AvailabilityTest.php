@@ -19,6 +19,7 @@ class AvailabilityTest extends TestCase
 
     // Seeded hours are Mon–Fri 09:00–18:00, Sat/Sun closed.
     private const MONDAY = '2026-07-27';
+
     private const SUNDAY = '2026-07-26';
 
     private AvailabilityService $availability;

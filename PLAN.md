@@ -313,7 +313,7 @@ This UI is **decided and locked**. Every feature below must follow it exactly â€
 
 ### 10.2 CI & seed data
 - [ ] GitHub Actions: tests on push/PR + README badges
-- [ ] Seeders: 1 admin, 2 staff, business + hours, 8 services, 15 customers, 40 bookings (all statuses/sources), 10 conversations with transcripts
+- [x] Seeders: 1 admin, 2 staff, business + hours, 8 services, 15 customers, 40 bookings (all statuses/sources), 10 conversations with transcripts
 
 ### 10.3 Release
 - [ ] README: screenshots (desktop + mobile, all 3 themes) + widget embed guide + GarageFlow setup guide

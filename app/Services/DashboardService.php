@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\DB;
  */
 class DashboardService
 {
-    public function __construct(private readonly BusinessService $business)
-    {
-    }
+    public function __construct(private readonly BusinessService $business) {}
 
     public function summary(): array
     {

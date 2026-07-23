@@ -27,8 +27,7 @@ class AgentService
         private readonly ClaudeClient $claude,
         private readonly ToolRegistry $registry,
         private readonly NotificationService $notifications,
-    ) {
-    }
+    ) {}
 
     public function handle(Conversation $conversation, string $userMessage): string
     {

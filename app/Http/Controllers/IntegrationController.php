@@ -13,9 +13,7 @@ class IntegrationController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly GarageFlowService $garageflow)
-    {
-    }
+    public function __construct(private readonly GarageFlowService $garageflow) {}
 
     public function show(): JsonResponse
     {

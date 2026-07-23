@@ -13,7 +13,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Message extends Model
 {
     public const ROLE_USER = 'user';
+
     public const ROLE_ASSISTANT = 'assistant';
+
     public const ROLE_TOOL = 'tool';
 
     protected function casts(): array

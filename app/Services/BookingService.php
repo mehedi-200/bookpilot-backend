@@ -20,8 +20,7 @@ class BookingService
         private readonly AvailabilityService $availability,
         private readonly CustomerService $customers,
         private readonly NotificationService $notifications,
-    ) {
-    }
+    ) {}
 
     public function paginate(array $filters): LengthAwarePaginator
     {

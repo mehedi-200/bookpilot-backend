@@ -18,6 +18,7 @@ class BookingTest extends TestCase
     use RefreshDatabase;
 
     private const MONDAY = '2026-07-27'; // seeded hours: 09:00–18:00
+
     private const SUNDAY = '2026-07-26'; // closed
 
     protected function setUp(): void
