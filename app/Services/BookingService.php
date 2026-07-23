@@ -19,6 +19,7 @@ class BookingService
     public function __construct(
         private readonly AvailabilityService $availability,
         private readonly CustomerService $customers,
+        private readonly NotificationService $notifications,
     ) {
     }
 
@@ -57,7 +58,7 @@ class BookingService
 
         $this->assertBookable($service, $start, $source);
 
-        return DB::transaction(function () use ($data, $service, $start, $source) {
+        $booking = DB::transaction(function () use ($data, $service, $start, $source) {
             $customer = $this->resolveCustomer($data);
             $end = $start->addMinutes($service->duration_minutes);
 
@@ -75,6 +76,13 @@ class BookingService
                 'notes' => $data['notes'] ?? null,
             ]);
         });
+
+        // Only the AI booking on its own is news; staff know what they typed in.
+        if ($source === Booking::SOURCE_WIDGET) {
+            $this->notifications->aiBooking($booking);
+        }
+
+        return $booking;
     }
 
     /**
@@ -102,6 +110,10 @@ class BookingService
         if ($status === Booking::STATUS_CONFIRMED && Integration::garageflow()->isReady()) {
             $booking->forceFill(['sync_status' => 'pending'])->save();
             SyncBookingToGarageFlow::dispatch($booking->id);
+        }
+
+        if ($status === Booking::STATUS_CANCELLED) {
+            $this->notifications->bookingCancelled($booking);
         }
 
         return $booking->fresh(['customer', 'service']);

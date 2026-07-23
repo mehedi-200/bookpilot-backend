@@ -48,9 +48,9 @@ Dashboard/search need **no new tables** — DashboardService and SearchService a
 4. FE Dashboard (cards in the fixed order) → master search (desktop dropdown + mobile page) → notifications (bell/panel/sheet + polling + deep links).
 
 ## ✅ Check before closing the feature
-- [ ] Dashboard = **one** API call; every number verified against seeded data; stat cards deep-link to correctly pre-filtered lists
-- [ ] Onboarding card reflects real setup_state and disappears when complete
+- [x] Dashboard = **one** API call; every number verified against seeded data; stat cards deep-link to correctly pre-filtered lists
+- [x] Onboarding card reflects real setup_state and disappears when complete
 - [ ] `/` shortcut focuses search; keyboard navigation works; searching a partial phone finds the customer
-- [ ] Each notification type fires exactly once per event; deep-links land on the right record; read state syncs across bell + list
-- [ ] Sync-failure retry storm doesn't spam duplicate notifications
+- [x] Each notification type fires exactly once per event; deep-links land on the right record; read state syncs across bell + list
+- [x] Sync-failure retry storm doesn't spam duplicate notifications
 - [ ] 3-theme + 3-breakpoint sweep (dashboard cards, search dropdown/page, notification panel/sheet)

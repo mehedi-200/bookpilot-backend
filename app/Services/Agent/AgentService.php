@@ -7,6 +7,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Service;
 use App\Models\WorkingHour;
+use App\Services\NotificationService;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Log;
 
@@ -25,6 +26,7 @@ class AgentService
     public function __construct(
         private readonly ClaudeClient $claude,
         private readonly ToolRegistry $registry,
+        private readonly NotificationService $notifications,
     ) {
     }
 
@@ -110,6 +112,9 @@ class AgentService
             'role' => Message::ROLE_ASSISTANT,
             'content' => $reply,
         ]);
+
+        // Someone is waiting — the team needs to know now, not tomorrow.
+        $this->notifications->handoff($conversation);
 
         return $reply;
     }
