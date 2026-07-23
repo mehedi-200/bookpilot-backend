@@ -12,6 +12,7 @@ use App\Services\BookingService;
 use App\Services\GarageFlow\GarageFlowService;
 use Database\Seeders\BusinessSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
@@ -108,7 +109,7 @@ class GarageFlowTest extends TestCase
     public function test_an_unreachable_host_is_reported_as_a_connection_problem(): void
     {
         $this->configure();
-        Http::fake(fn () => throw new \Illuminate\Http\Client\ConnectionException('cURL error 6'));
+        Http::fake(fn () => throw new ConnectionException('cURL error 6'));
 
         $this->actingAs(User::factory()->admin()->create())
             ->postJson('/api/integrations/garageflow/test')

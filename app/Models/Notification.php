@@ -12,8 +12,11 @@ class Notification extends Model
     // Deliberately few types — a badge that always has something on it
     // stops meaning anything.
     public const TYPE_AI_BOOKING = 'ai_booking';
+
     public const TYPE_BOOKING_CANCELLED = 'booking_cancelled';
+
     public const TYPE_HANDOFF = 'handoff';
+
     public const TYPE_SYNC_FAILED = 'sync_failed';
 
     protected function casts(): array

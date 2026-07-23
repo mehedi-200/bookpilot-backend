@@ -11,9 +11,7 @@ class DashboardController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly DashboardService $dashboard)
-    {
-    }
+    public function __construct(private readonly DashboardService $dashboard) {}
 
     public function index(): JsonResponse
     {

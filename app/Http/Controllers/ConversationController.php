@@ -13,9 +13,7 @@ class ConversationController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly ConversationService $conversations)
-    {
-    }
+    public function __construct(private readonly ConversationService $conversations) {}
 
     public function index(Request $request): JsonResponse
     {

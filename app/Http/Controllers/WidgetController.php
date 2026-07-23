@@ -16,9 +16,7 @@ class WidgetController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly AgentService $agent)
-    {
-    }
+    public function __construct(private readonly AgentService $agent) {}
 
     /** Everything the widget needs to render before the first message. */
     public function bootstrap(): JsonResponse

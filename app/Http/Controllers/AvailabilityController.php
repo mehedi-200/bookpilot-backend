@@ -12,9 +12,7 @@ class AvailabilityController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly AvailabilityService $availability)
-    {
-    }
+    public function __construct(private readonly AvailabilityService $availability) {}
 
     public function index(Request $request): JsonResponse
     {

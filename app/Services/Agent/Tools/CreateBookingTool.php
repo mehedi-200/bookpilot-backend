@@ -11,9 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class CreateBookingTool implements AgentTool
 {
-    public function __construct(private readonly BookingService $bookings)
-    {
-    }
+    public function __construct(private readonly BookingService $bookings) {}
 
     public function name(): string
     {

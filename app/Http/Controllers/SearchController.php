@@ -11,9 +11,7 @@ class SearchController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly SearchService $search)
-    {
-    }
+    public function __construct(private readonly SearchService $search) {}
 
     public function index(Request $request): JsonResponse
     {

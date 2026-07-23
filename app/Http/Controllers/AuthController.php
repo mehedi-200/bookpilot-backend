@@ -13,9 +13,7 @@ class AuthController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly AuthService $authService)
-    {
-    }
+    public function __construct(private readonly AuthService $authService) {}
 
     public function login(LoginRequest $request): JsonResponse
     {

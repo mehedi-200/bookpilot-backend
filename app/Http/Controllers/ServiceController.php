@@ -15,9 +15,7 @@ class ServiceController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly ServiceCatalogService $catalog)
-    {
-    }
+    public function __construct(private readonly ServiceCatalogService $catalog) {}
 
     public function index(Request $request): JsonResponse
     {

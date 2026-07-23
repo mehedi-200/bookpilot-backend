@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
@@ -30,7 +31,7 @@ class ApiFoundationTest extends TestCase
 
     public function test_validation_error_returns_422_shape_with_errors_bag(): void
     {
-        Route::post('/api/_validation-probe', function (\Illuminate\Http\Request $request) {
+        Route::post('/api/_validation-probe', function (Request $request) {
             $request->validate(['name' => 'required']);
         });
 

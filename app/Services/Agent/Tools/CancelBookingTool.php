@@ -11,9 +11,7 @@ class CancelBookingTool implements AgentTool
 {
     use FindsOwnBooking;
 
-    public function __construct(private readonly BookingService $bookings)
-    {
-    }
+    public function __construct(private readonly BookingService $bookings) {}
 
     public function name(): string
     {

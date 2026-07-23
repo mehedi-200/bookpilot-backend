@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Http;
  */
 class GarageFlowClient
 {
-    public function __construct(private readonly Integration $integration)
-    {
-    }
+    public function __construct(private readonly Integration $integration) {}
 
     private function http(): PendingRequest
     {

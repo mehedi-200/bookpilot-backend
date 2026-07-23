@@ -8,9 +8,7 @@ use App\Services\AvailabilityService;
 
 class CheckAvailabilityTool implements AgentTool
 {
-    public function __construct(private readonly AvailabilityService $availability)
-    {
-    }
+    public function __construct(private readonly AvailabilityService $availability) {}
 
     public function name(): string
     {

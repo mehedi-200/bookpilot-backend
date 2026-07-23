@@ -16,9 +16,7 @@ class CustomerController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private readonly CustomerService $customerService)
-    {
-    }
+    public function __construct(private readonly CustomerService $customerService) {}
 
     public function index(Request $request): JsonResponse
     {

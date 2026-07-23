@@ -18,7 +18,9 @@ class Conversation extends Model
     use HasFactory;
 
     public const STATUS_ACTIVE = 'active';
+
     public const STATUS_ENDED = 'ended';
+
     public const STATUS_HANDED_OFF = 'handed_off';
 
     protected $attributes = [
