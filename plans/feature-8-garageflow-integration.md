@@ -56,9 +56,9 @@ HTTP client: Laravel `Http::withToken()->baseUrl()`, 10s timeout, responses logg
 4. FE Integrations page → booking detail chip/retry → list markers.
 
 ## ✅ Check before closing the feature
-- [ ] `Http::fake()` tests: full happy path, existing customer found (no duplicate), 401/timeout/500 at each step → correct retry then failed state, disabled integration = no job dispatched
-- [ ] Booking confirm is never delayed by sync (job is queued, transition returns immediately)
+- [x] `Http::fake()` tests: full happy path, existing customer found (no duplicate), 401/timeout/500 at each step → correct retry then failed state, disabled integration = no job dispatched
+- [x] Booking confirm is never delayed by sync (job is queued, transition returns immediately)
 - [ ] Live test against local GarageFlow install: booking → job appears with correct customer/type/date
-- [ ] Token never appears in logs, responses, or the DB in plaintext
-- [ ] Test-connection UX: wrong URL and wrong token give distinct, human error messages
+- [x] Token never appears in logs, responses, or the DB in plaintext
+- [x] Test-connection UX: wrong URL and wrong token give distinct, human error messages
 - [ ] Retry from UI works and updates the chip without page reload (query invalidation)

@@ -273,13 +273,13 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 ## Feature 8 — GarageFlow Integration — `feature/garageflow-integration`
 
 ### 8.1 API
-- [ ] `integrations` table (provider, base_url, api_token encrypted, enabled)
-- [ ] `GarageFlowService`: on booking → Confirmed: find/create customer + vehicle in GarageFlow → create service job; store remote IDs + `sync_status` on booking
-- [ ] `POST /api/integrations/garageflow/test` + retry-sync endpoint; failures logged, never block the booking
+- [x] `integrations` table (provider, base_url, api_token encrypted, enabled)
+- [x] `GarageFlowService`: on booking → Confirmed: find/create customer + vehicle in GarageFlow → create service job; store remote IDs + `sync_status` on booking
+- [x] `POST /api/integrations/garageflow/test` + retry-sync endpoint; failures logged, never block the booking
 
 ### 8.2 Frontend
-- [ ] Integrations page per fixed UI (form, test connection, enable switch, last-sync)
-- [ ] Booking detail: sync StatusChip + retry action
+- [x] Integrations page per fixed UI (form, test connection, enable switch, last-sync)
+- [x] Booking detail: sync StatusChip + retry action
 
 ---
 

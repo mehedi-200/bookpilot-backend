@@ -8,6 +8,7 @@ use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HealthController;
+use App\Http\Controllers\IntegrationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
@@ -44,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookings/{booking}', [BookingController::class, 'show']);
     Route::patch('/bookings/{booking}/status', [BookingController::class, 'updateStatus']);
     Route::patch('/bookings/{booking}/reschedule', [BookingController::class, 'reschedule']);
+    Route::post('/bookings/{booking}/sync', [IntegrationController::class, 'syncBooking']);
 
     Route::get('/conversations', [ConversationController::class, 'index']);
     Route::get('/conversations/{conversation}', [ConversationController::class, 'show']);
@@ -73,5 +75,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/closed-dates/{closedDate}', [WorkingHourController::class, 'destroyClosedDate']);
 
         Route::delete('/customers/{customer}', [CustomerController::class, 'destroy']);
+
+        Route::get('/integrations/garageflow', [IntegrationController::class, 'show']);
+        Route::put('/integrations/garageflow', [IntegrationController::class, 'update']);
+        Route::post('/integrations/garageflow/test', [IntegrationController::class, 'test']);
+        Route::get('/integrations/garageflow/mechanics', [IntegrationController::class, 'mechanics']);
     });
 });
