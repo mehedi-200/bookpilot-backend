@@ -129,26 +129,26 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 ## Feature 1 — App Shell, Themes & Component Library — `feature/app-shell` (frontend)
 
 ### 1.1 Theme engine
-- [ ] Design tokens as CSS variables in `index.css` (bg, surface, border, text, accent, status colors)
-- [ ] Three themes via root class: `dark` (DEFAULT) · `light` · `reading`
-- [ ] `useTheme` hook + localStorage persistence
+- [x] Design tokens as CSS variables in `index.css` (bg, surface, border, text, accent, status colors)
+- [x] Three themes via root class: `dark` (DEFAULT) · `light` · `reading`
+- [x] `useTheme` hook + localStorage persistence
 
 ### 1.2 Component library
-- [ ] Button, Input, Select, Textarea (RHF-compatible)
-- [ ] Card, Modal (+ mobile bottom-sheet render), ConfirmModal, EmptyState, Spinner, StatusChip, PageHeader
-- [ ] DataList — one component: table ≥lg / cards <lg, `toolbar` prop
-- [ ] Pagination — the exact fixed design (desktop bar + compact mobile variant)
+- [x] Button, Input, Select, Textarea (RHF-compatible)
+- [x] Card, Modal (+ mobile bottom-sheet render), ConfirmModal, EmptyState, Spinner, StatusChip, PageHeader
+- [x] DataList — one component: table ≥lg / cards <lg, `toolbar` prop
+- [x] Pagination — the exact fixed design (desktop bar + compact mobile variant)
 
 ### 1.3 Desktop chrome
-- [ ] Thin header: ☰ + logo, master search bar, bell, profile menu
-- [ ] Collapsible thin sidebar (icons-only collapsed, persisted), thin footer
+- [x] Thin header: ☰ + logo, master search bar, bell, profile menu
+- [x] Collapsible thin sidebar (icons-only collapsed, persisted), thin footer
 
 ### 1.4 Mobile chrome
-- [ ] Bottom nav (Dashboard · Bookings · Conversations · More) + More sheet
-- [ ] App-style top bar per page (title + contextual actions)
+- [x] Bottom nav (Dashboard · Bookings · Conversations · More) + More sheet
+- [x] App-style top bar per page (title + contextual actions)
 
 ### 1.5 Routing skeleton
-- [ ] All routes with placeholder pages, `<AppLayout>` switching by breakpoint, `<ProtectedRoute>`
+- [x] All routes with placeholder pages, `<AppLayout>` switching by breakpoint, `<ProtectedRoute>`
 
 ---
 

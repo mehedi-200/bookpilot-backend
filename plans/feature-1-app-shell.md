@@ -34,7 +34,7 @@ Button · IconButton · Input · Select · Textarea · Card · Modal/Sheet · Co
 
 ## ✅ Check before closing the feature
 - [ ] Every component renders correctly in all 3 themes (manual sweep with theme switcher)
-- [ ] No hardcoded color anywhere (`grep` for `#`, `rgb(`, Tailwind palette classes in components)
+- [x] No hardcoded color anywhere (`grep` for `#`, `rgb(`, Tailwind palette classes in components)
 - [ ] Sidebar collapse persists across reload; theme persists; no theme flash on load
 - [ ] All routes reachable on mobile via bottom nav + More sheet; touch targets ≥ 44px
 - [ ] Pagination pixel-checked against the approved reference on desktop AND compact on mobile
