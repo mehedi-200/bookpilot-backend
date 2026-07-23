@@ -42,7 +42,7 @@ class ApiFoundationTest extends TestCase
 
     public function test_unauthenticated_api_request_returns_401_shape(): void
     {
-        $this->getJson('/api/user')
+        $this->getJson('/api/profile')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,

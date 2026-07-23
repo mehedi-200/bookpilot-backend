@@ -49,7 +49,7 @@ All through Controller → FormRequest → `AuthService`/`UserService` → `User
 4. FE: Profile page → Staff page.
 
 ## ✅ Check before closing the feature
-- [ ] API tests: login ok/wrong/inactive, throttle, logout revokes, staff blocked from /api/users, self-deactivation blocked
+- [x] API tests: login ok/wrong/inactive, throttle, logout revokes, staff blocked from /api/users, self-deactivation blocked
 - [ ] Deep link → login → returns to the deep link
 - [ ] Wrong password shows friendly banner, button re-enables
 - [ ] Staff user sees no admin menu items anywhere (sidebar, bottom nav, More sheet)
