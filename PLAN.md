@@ -259,14 +259,14 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 ## Feature 7 — Embeddable Chat Widget — `feature/chat-widget`
 
 ### 7.1 Widget build & embed
-- [ ] Separate Vite entry `src/widget/` → single JS bundle; embed: `<script src=".../widget.js" data-widget-key="…">`
-- [ ] Style isolation (Shadow DOM/prefixed reset); light+dark via `prefers-color-scheme`
+- [x] Separate Vite entry `src/widget/` → single JS bundle; embed: `<script src=".../widget.js" data-widget-key="…">`
+- [x] Style isolation (Shadow DOM/prefixed reset); light+dark via `prefers-color-scheme`
 
 ### 7.2 Widget UI & chat flow
-- [ ] Launcher + panel per fixed widget UI (full-screen sheet on mobile)
-- [ ] Message list, typing indicator, error retry state
-- [ ] Slot-picker quick-reply chips + booking confirmation card
-- [ ] Conversation token persisted (localStorage) so refresh resumes the chat
+- [x] Launcher + panel per fixed widget UI (full-screen sheet on mobile)
+- [x] Message list, typing indicator, error retry state
+- [x] Slot-picker quick-reply chips + booking confirmation card
+- [x] Conversation token persisted (localStorage) so refresh resumes the chat
 
 ---
 
