@@ -155,21 +155,21 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 ## Feature 2 — Authentication & Accounts — `feature/authentication`
 
 ### 2.1 API: auth
-- [ ] `users.role` (admin|staff) migration + first-admin seeder
-- [ ] `POST /api/login` · `POST /api/logout` — AuthController → LoginRequest → AuthService → UserResource
-- [ ] `role:admin` middleware for admin route groups
+- [x] `users.role` (admin|staff) migration + first-admin seeder
+- [x] `POST /api/login` · `POST /api/logout` — AuthController → LoginRequest → AuthService → UserResource
+- [x] `role:admin` middleware for admin route groups
 
 ### 2.2 API: profile & staff
-- [ ] `GET/PUT /api/profile` (UpdateProfileRequest, optional password change)
-- [ ] Admin CRUD `/api/users` for staff accounts (StoreUserRequest/UpdateUserRequest, paginated)
+- [x] `GET/PUT /api/profile` (UpdateProfileRequest, optional password change)
+- [x] Admin CRUD `/api/users` for staff accounts (StoreUserRequest/UpdateUserRequest, paginated)
 
 ### 2.3 Frontend: auth flow
-- [ ] Login page per fixed UI, `authService.js` + `useAuth`, token storage, 401 auto-logout
-- [ ] ProtectedRoute + role-based menu filtering (admin-only items hidden for staff)
+- [x] Login page per fixed UI, `authService.js` + `useAuth`, token storage, 401 auto-logout
+- [x] ProtectedRoute + role-based menu filtering (admin-only items hidden for staff)
 
 ### 2.4 Frontend: profile & staff pages
-- [ ] Profile page (edit, password, theme switcher cards)
-- [ ] Staff page (admin): DataList + add/edit/delete via Modal
+- [x] Profile page (edit, password, theme switcher cards)
+- [x] Staff page (admin): DataList + add/edit/delete via Modal
 
 ---
 
