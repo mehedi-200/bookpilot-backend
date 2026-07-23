@@ -57,6 +57,7 @@ class DashboardService
                 ->limit(5)
                 ->get(),
             'by_status' => $this->countsByStatus(),
+            'series' => $this->series($now),
             'ai_share' => $this->aiShare($monthAgo),
             'setup_state' => $this->business->setupState($business),
         ];
@@ -67,6 +68,43 @@ class DashboardService
         return Booking::whereBetween('starts_at', [$from, $to])
             ->whereNot('status', Booking::STATUS_CANCELLED)
             ->count();
+    }
+
+    /**
+     * Bookings per day, last 7 days through the next 7 — enough to see the
+     * shape of the week without another request.
+     */
+    private function series(CarbonImmutable $now): array
+    {
+        $start = $now->startOfDay()->subDays(7);
+        $end = $now->startOfDay()->addDays(8);
+
+        $rows = Booking::whereBetween('starts_at', [$start, $end])
+            ->whereNot('status', Booking::STATUS_CANCELLED)
+            ->get(['starts_at', 'source']);
+
+        $days = [];
+
+        for ($day = $start; $day->lessThan($end); $day = $day->addDay()) {
+            $onThisDay = $rows->filter(
+                fn (Booking $booking) => $booking->starts_at
+                    ->setTimezone($now->timezone)
+                    ->isSameDay($day)
+            );
+
+            $days[] = [
+                'date' => $day->toDateString(),
+                'label' => $day->format('D'),
+                'day' => $day->format('j'),
+                'ai' => $onThisDay->where('source', Booking::SOURCE_WIDGET)->count(),
+                'manual' => $onThisDay->where('source', Booking::SOURCE_MANUAL)->count(),
+                'total' => $onThisDay->count(),
+                'is_today' => $day->isSameDay($now),
+                'is_past' => $day->lessThan($now->startOfDay()),
+            ];
+        }
+
+        return $days;
     }
 
     private function countsByStatus(): array
