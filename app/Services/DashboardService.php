@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Booking;
 use App\Models\Business;
+use App\Models\Conversation;
 use App\Models\Customer;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
@@ -35,14 +36,16 @@ class DashboardService
                 'week' => $this->countBetween($todayStart, $weekEnd),
                 'pending' => Booking::where('status', Booking::STATUS_PENDING)->count(),
                 'customers' => Customer::count(),
-                'active_conversations' => 0, // wired in Feature 6
+                'active_conversations' => Conversation::where('status', Conversation::STATUS_ACTIVE)
+                    ->where('last_activity_at', '>=', $now->subDay())
+                    ->count(),
             ],
             'needs_attention' => [
                 'pending' => Booking::where('status', Booking::STATUS_PENDING)
                     ->where('starts_at', '>=', $now)
                     ->count(),
                 'failed_syncs' => Booking::where('sync_status', 'failed')->count(),
-                'handoffs' => 0, // wired in Feature 6
+                'handoffs' => Conversation::where('status', Conversation::STATUS_HANDED_OFF)->count(),
             ],
             'today' => Booking::with(['customer', 'service'])
                 ->whereBetween('starts_at', [$todayStart, $todayEnd])
