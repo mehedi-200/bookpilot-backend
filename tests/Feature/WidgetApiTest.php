@@ -166,6 +166,45 @@ class WidgetApiTest extends TestCase
             ->assertJsonPath('data.booking.status', 'pending');
     }
 
+    public function test_chat_returns_offered_slots_so_the_widget_can_show_chips(): void
+    {
+        $service = Service::factory()->create(['duration_minutes' => 60]);
+        $this->travelTo('2026-07-24 10:00:00');
+
+        Http::fake([
+            'api.anthropic.com/*' => Http::sequence()
+                ->push([
+                    'content' => [[
+                        'type' => 'tool_use', 'id' => 'toolu_1', 'name' => 'check_availability',
+                        'input' => ['service_id' => $service->id, 'date' => '2026-07-27'],
+                    ]],
+                    'stop_reason' => 'tool_use',
+                    'usage' => ['input_tokens' => 1, 'output_tokens' => 1],
+                ])
+                ->push([
+                    'content' => [['type' => 'text', 'text' => 'Here are Monday’s times.']],
+                    'stop_reason' => 'end_turn',
+                    'usage' => ['input_tokens' => 1, 'output_tokens' => 1],
+                ]),
+        ]);
+
+        $response = $this->widget()->postJson('/api/widget/chat', ['message' => 'monday please'])
+            ->assertOk()
+            ->assertJsonPath('data.slots.date', '2026-07-27');
+
+        $this->assertSame('9:00 AM', $response->json('data.slots.morning.0.time'));
+        $this->assertNotEmpty($response->json('data.slots.morning.0.starts_at'));
+    }
+
+    public function test_no_slots_are_returned_when_the_agent_did_not_look_any_up(): void
+    {
+        $this->fakeReply('We open at 9am.');
+
+        $this->widget()->postJson('/api/widget/chat', ['message' => 'when do you open?'])
+            ->assertOk()
+            ->assertJsonPath('data.slots', null);
+    }
+
     public function test_chat_is_rate_limited_per_conversation(): void
     {
         $this->fakeReply();

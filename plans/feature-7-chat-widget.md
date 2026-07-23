@@ -40,7 +40,7 @@
 ## ✅ Check before closing the feature
 - [ ] Works pasted into a plain HTML page, a Bootstrap page, and the hostile-CSS test page — pixel-identical
 - [ ] Full booking flow on a real phone (iOS Safari + Android Chrome): keyboard, scroll, sheet, chips all correct
-- [ ] Refresh mid-conversation resumes; new key = new conversation
+- [x] Refresh mid-conversation resumes; new key = new conversation
 - [ ] Dark/light auto-switch follows OS setting
-- [ ] Bundle ≤ ~150KB gzipped; no console errors on host page; nothing global leaked (`window` clean except one namespaced entry)
-- [ ] Invalid/revoked widget key → widget silently doesn't render (no scary errors on the owner's site)
+- [x] Bundle ≤ ~150KB gzipped; no console errors on host page; nothing global leaked (`window` clean except one namespaced entry)
+- [x] Invalid/revoked widget key → widget silently doesn't render (no scary errors on the owner's site)

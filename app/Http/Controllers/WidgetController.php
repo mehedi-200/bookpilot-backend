@@ -59,6 +59,7 @@ class WidgetController extends Controller
         $conversation = $this->resolveConversation($validated['conversation_token'] ?? null);
 
         $bookingIdsBefore = $conversation->bookings()->pluck('id');
+        $lastMessageId = (int) $conversation->messages()->max('id');
 
         $reply = $this->agent->handle($conversation, $validated['message']);
 
@@ -75,7 +76,34 @@ class WidgetController extends Controller
             'conversation_token' => $conversation->token,
             'status' => $conversation->fresh()->status,
             'booking' => $newBooking ? new BookingResource($newBooking) : null,
+            'slots' => $this->slotsOfferedIn($conversation, $lastMessageId),
         ]);
+    }
+
+    /**
+     * Times the agent looked up during this turn, so the widget can offer them
+     * as tappable chips instead of making the customer type a time back.
+     */
+    private function slotsOfferedIn(Conversation $conversation, int $afterMessageId): ?array
+    {
+        $lookup = $conversation->messages()
+            ->where('id', '>', $afterMessageId)
+            ->where('tool_name', 'check_availability')
+            ->reorder('id', 'desc')
+            ->first();
+
+        $result = $lookup?->tool_result;
+
+        if (! $result || ! ($result['available'] ?? false)) {
+            return null;
+        }
+
+        return [
+            'date' => $result['date'] ?? null,
+            'morning' => $result['morning'] ?? [],
+            'afternoon' => $result['afternoon'] ?? [],
+            'evening' => $result['evening'] ?? [],
+        ];
     }
 
     private function resolveConversation(?string $token): Conversation
