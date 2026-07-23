@@ -10,6 +10,30 @@
 
 ---
 
+# 📋 PER-FEATURE PLANS (start here)
+
+Each feature has a complete standalone plan — UX analysis, fixed UI, database design, API contract, build order, and a QA checklist.
+
+**Working rule: one feature at a time.** Build it → run its ✅ checklist → fix what the checklist catches → only then open the next feature's plan.
+
+| # | Feature | Plan file |
+|---|---|---|
+| 0 | Project scaffolding | [plans/feature-0-project-scaffolding.md](plans/feature-0-project-scaffolding.md) |
+| 1 | App shell, themes & components | [plans/feature-1-app-shell.md](plans/feature-1-app-shell.md) |
+| 2 | Authentication & accounts | [plans/feature-2-authentication.md](plans/feature-2-authentication.md) |
+| 3 | Business setup | [plans/feature-3-business-setup.md](plans/feature-3-business-setup.md) |
+| 4 | Customers | [plans/feature-4-customers.md](plans/feature-4-customers.md) |
+| 5 | ⭐ Bookings & availability | [plans/feature-5-bookings-availability.md](plans/feature-5-bookings-availability.md) |
+| 6 | ⭐ AI agent (Claude tool-calling) | [plans/feature-6-ai-agent.md](plans/feature-6-ai-agent.md) |
+| 7 | Embeddable chat widget | [plans/feature-7-chat-widget.md](plans/feature-7-chat-widget.md) |
+| 8 | GarageFlow integration | [plans/feature-8-garageflow-integration.md](plans/feature-8-garageflow-integration.md) |
+| 9 | Dashboard, search & notifications | [plans/feature-9-dashboard-search-notifications.md](plans/feature-9-dashboard-search-notifications.md) |
+| 10 | Quality & release | [plans/feature-10-quality-release.md](plans/feature-10-quality-release.md) |
+
+**UX upgrades locked in by these plans:** onboarding checklist card · `auto_confirm` setting (AI books instantly vs owner reviews) · phone-as-identity with duplicate-proof `findOrCreateByPhone` · slot picker grouped Morning/Afternoon/Evening with 14-day strip · single next-action button on booking detail (no illegal status options) · reschedule without cancel-rebook · quick-start chips + tappable slot chips + confirmation card in the widget · "Needs attention" dashboard card · clickable stat cards → pre-filtered lists · `/` search shortcut · few-but-meaningful notifications with deep links · skeleton loaders + actionable EmptyStates everywhere.
+
+---
+
 # 🎨 FIXED UI SPECIFICATION
 
 This UI is **decided and locked**. Every feature below must follow it exactly — no per-page improvisation.
