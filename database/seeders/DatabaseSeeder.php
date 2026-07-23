@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(BusinessSeeder::class);
+
         User::firstOrCreate(
             ['email' => 'admin@bookpilot.test'],
             [

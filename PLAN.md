@@ -176,23 +176,23 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 ## Feature 3 — Business Setup — `feature/business-setup`
 
 ### 3.1 API: business profile & widget key
-- [ ] `businesses` migration/model (name, slug, phone, email, address, timezone, widget_key)
-- [ ] `GET/PUT /api/business` → BusinessService → BusinessResource
-- [ ] `POST /api/business/widget-key/regenerate` (admin)
+- [x] `businesses` migration/model (name, slug, phone, email, address, timezone, widget_key)
+- [x] `GET/PUT /api/business` → BusinessService → BusinessResource
+- [x] `POST /api/business/widget-key/regenerate` (admin)
 
 ### 3.2 API: services catalog
-- [ ] `services` migration/model (name, duration_minutes, price, active, soft deletes)
-- [ ] `apiResource /api/services` + Store/Update Requests + paginated index + active filter
+- [x] `services` migration/model (name, duration_minutes, price, active, soft deletes)
+- [x] `apiResource /api/services` + Store/Update Requests + paginated index + active filter
 
 ### 3.3 API: working hours & closed dates
-- [ ] `working_hours` (day_of_week, open, close, is_closed) + `closed_dates` (date, reason)
-- [ ] `GET/PUT /api/working-hours` + closed-dates CRUD via WorkingHourService
+- [x] `working_hours` (day_of_week, open, close, is_closed) + `closed_dates` (date, reason)
+- [x] `GET/PUT /api/working-hours` + closed-dates CRUD via WorkingHourService
 
 ### 3.4 Frontend: settings pages
-- [ ] Settings → Business tab (form + timezone select)
-- [ ] Settings → Working hours tab (7-day grid + closed-dates list)
-- [ ] Settings → Widget tab (embed snippet, copy button, key regenerate with ConfirmModal)
-- [ ] Services page per fixed UI (DataList + Modal forms + active toggle)
+- [x] Settings → Business tab (form + timezone select)
+- [x] Settings → Working hours tab (7-day grid + closed-dates list)
+- [x] Settings → Widget tab (embed snippet, copy button, key regenerate with ConfirmModal)
+- [x] Services page per fixed UI (DataList + Modal forms + active toggle)
 
 ---
 

@@ -75,7 +75,7 @@ closed_dates
 3. FE Services page → Settings tabs (Business → Hours → Widget).
 
 ## ✅ Check before closing the feature
-- [ ] API tests: hours validation (close>open, 7 rows), service CRUD + toggle, key regeneration invalidates old key, staff blocked from writes
+- [x] API tests: hours validation (close>open, 7 rows), service CRUD + toggle, key regeneration invalidates old key, staff blocked from writes
 - [ ] Copy-to-weekdays works; closed day disables inputs; timezone select searchable
 - [ ] Embed snippet copies correctly; regenerate shows warning modal
 - [ ] Soft-deleted service still displays on historical bookings (verified again in Feature 5)
