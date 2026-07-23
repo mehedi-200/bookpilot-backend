@@ -9,7 +9,9 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\IntegrationController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WidgetController;
@@ -37,6 +39,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/working-hours', [WorkingHourController::class, 'index']);
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/search', [SearchController::class, 'index']);
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::patch('/notifications/read-all', [NotificationController::class, 'markAllRead']);
+    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markRead']);
 
     Route::get('/availability', [AvailabilityController::class, 'index']);
 

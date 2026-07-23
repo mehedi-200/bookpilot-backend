@@ -4,6 +4,7 @@ namespace App\Services\Agent\Tools;
 
 use App\Models\Business;
 use App\Models\Conversation;
+use App\Services\NotificationService;
 
 class HandoffToHumanTool implements AgentTool
 {
@@ -32,6 +33,10 @@ class HandoffToHumanTool implements AgentTool
         ];
     }
 
+    public function __construct(private readonly NotificationService $notifications)
+    {
+    }
+
     public function execute(array $input, Conversation $conversation): array
     {
         $business = Business::current();
@@ -40,6 +45,8 @@ class HandoffToHumanTool implements AgentTool
             'status' => Conversation::STATUS_HANDED_OFF,
             'handoff_reason' => $input['reason'] ?? null,
         ]);
+
+        $this->notifications->handoff($conversation);
 
         return [
             'handed_off' => true,

@@ -289,16 +289,16 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 - [x] `GET /api/dashboard` (single DashboardService): bookings today/week, pending count, active conversations, AI-booked % (month), upcoming bookings, bookings-by-status
 
 ### 9.2 API: master search
-- [ ] `GET /api/search?q=` → grouped: bookings (ref/customer), customers, conversations — SearchService
+- [x] `GET /api/search?q=` → grouped: bookings (ref/customer), customers, conversations — SearchService
 
 ### 9.3 API: notifications
-- [ ] `notifications` table + list (paginated) / unread-count / mark-read endpoints
-- [ ] Triggers in Services: new AI booking, booking cancelled, handoff to human, GarageFlow sync failed
+- [x] `notifications` table + list (paginated) / unread-count / mark-read endpoints
+- [x] Triggers in Services: new AI booking, booking cancelled, handoff to human, GarageFlow sync failed
 
 ### 9.4 Frontend
 - [x] Dashboard page per fixed UI (stat cards, upcoming list, AI/manual breakdown); post-login landing
-- [ ] Master search: debounced grouped dropdown (desktop) / full-screen page (mobile)
-- [ ] Bell + badge, notification panel/sheet, mark-as-read, TanStack Query polling
+- [x] Master search: debounced grouped dropdown (desktop) / full-screen page (mobile)
+- [x] Bell + badge, notification panel/sheet, mark-as-read, TanStack Query polling
 
 ---
 

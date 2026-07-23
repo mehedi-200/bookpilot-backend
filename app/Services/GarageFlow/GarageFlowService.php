@@ -4,6 +4,7 @@ namespace App\Services\GarageFlow;
 
 use App\Models\Booking;
 use App\Models\Integration;
+use App\Services\NotificationService;
 use App\Support\PhoneNumber;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
@@ -108,6 +109,8 @@ class GarageFlowService
             'booking' => $booking->reference,
             'error' => $message,
         ]);
+
+        app(NotificationService::class)->syncFailed($booking);
     }
 
     private function resolveCustomer(GarageFlowClient $client, Booking $booking): array
