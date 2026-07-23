@@ -113,16 +113,16 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 ## Feature 0 — Project Scaffolding — `feature/project-setup`
 
 ### 0.1 Backend scaffold
-- [ ] Laravel 13 new project, MySQL database `bookpilot`, `.env.example` committed
-- [ ] Sanctum installed + configured (SPA token auth), CORS for frontend origin
-- [ ] `ApiResponse` trait (`sendSuccess` / `sendError`) + base folder structure (`Services/`, `Requests/`, `Resources/`)
-- [ ] Global exception handler returns JSON via ApiResponse shape (404/422/500)
+- [x] Laravel 13 new project, MySQL database `bookpilot`, `.env.example` committed
+- [x] Sanctum installed + configured (SPA token auth), CORS for frontend origin
+- [x] `ApiResponse` trait (`sendSuccess` / `sendError`) + base folder structure (`Services/`, `Requests/`, `Resources/`)
+- [x] Global exception handler returns JSON via ApiResponse shape (404/422/500)
 
 ### 0.2 Frontend scaffold
-- [ ] Vite + React 19 + Tailwind CSS, path aliases, ESLint/Prettier
-- [ ] Axios instance in `services/api.js` (base URL from env, auth + 401 interceptors)
-- [ ] TanStack Query provider + React Router + React Hook Form installed
-- [ ] Folder structure per CLAUDE.md (`components/ pages/ widget/ services/ hooks/ utils/`)
+- [x] Vite + React 19 + Tailwind CSS, path aliases, ESLint/Prettier
+- [x] Axios instance in `services/api.js` (base URL from env, auth + 401 interceptors)
+- [x] TanStack Query provider + React Router + React Hook Form installed
+- [x] Folder structure per CLAUDE.md (`components/ pages/ widget/ services/ hooks/ utils/`)
 
 ---
 

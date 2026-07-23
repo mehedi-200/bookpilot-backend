@@ -10,7 +10,7 @@
 ## Backend build order
 1. `laravel new` (Laravel 13), MySQL db `bookpilot`, commit `.env.example` with every key the app will ever need (`ANTHROPIC_API_KEY`, `BOOKPILOT_MODEL`, `FRONTEND_URL`) so setup is copy-rename-fill.
 2. Sanctum: install, `auth:sanctum` group ready, token abilities not needed (single business).
-3. CORS: allow `FRONTEND_URL` origin, credentials true.
+3. CORS: open origins, credentials false — auth is Bearer-token (no cookies) and the F7 widget is embedded on arbitrary customer sites, so `api/*` must answer any origin.
 4. `app/Traits/ApiResponse.php` — exactly `sendSuccess($data, $message='Success', $code=200)` and `sendError($message, $code, $errors=null)`.
 5. Exception handler: force JSON for `/api/*` — 404 model/route, 422 validation (errors bag), 401, 403, 429, 500 — all through the ApiResponse shape.
 6. Empty base folders committed: `app/Services/`, `app/Http/Requests/`, `app/Http/Resources/`.
@@ -27,8 +27,8 @@
 No domain tables yet — only Laravel defaults (`users`, `cache`, `jobs`, `personal_access_tokens`). Domain tables come with their features (each feature file owns its migrations).
 
 ## ✅ Check before closing the feature
-- [ ] `php artisan test` green, `npm run build` green
-- [ ] Frontend fetches `/api/ping` successfully through the Axios instance (CORS proven)
-- [ ] Hitting an unknown `/api/*` route returns the JSON ApiResponse 404 shape (not HTML)
-- [ ] Validation error returns 422 with `errors` bag in the standard shape
-- [ ] Fresh-clone setup works from README steps alone (copy `.env.example`, migrate, run)
+- [x] `php artisan test` green, `npm run build` green
+- [x] Frontend fetches `/api/ping` successfully through the Axios instance (CORS proven)
+- [x] Hitting an unknown `/api/*` route returns the JSON ApiResponse 404 shape (not HTML)
+- [x] Validation error returns 422 with `errors` bag in the standard shape
+- [x] Fresh-clone setup works from README steps alone (copy `.env.example`, migrate, run)
