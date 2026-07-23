@@ -17,4 +17,9 @@ class Customer extends Model
     {
         return $this->hasMany(Booking::class)->latest('starts_at');
     }
+
+    public function conversations(): HasMany
+    {
+        return $this->hasMany(Conversation::class)->latest();
+    }
 }

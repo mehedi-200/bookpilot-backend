@@ -18,8 +18,7 @@ class CustomerResource extends JsonResource
             'created_at' => $this->created_at?->toISOString(),
             'bookings_count' => $this->bookings_count ?? 0,
             'bookings' => BookingResource::collection($this->whenLoaded('bookings')),
-            // Wired in Feature 6.
-            'conversations' => $this->whenLoaded('conversations'),
+            'conversations' => ConversationResource::collection($this->whenLoaded('conversations')),
         ];
     }
 }

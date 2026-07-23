@@ -4,18 +4,26 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WidgetController;
 use App\Http\Controllers\WorkingHourController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/ping', [HealthController::class, 'ping']);
 
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+
+// ── Public widget (authenticated by widget key, not a user) ──────────────
+Route::middleware('widget')->prefix('widget')->group(function () {
+    Route::get('/bootstrap', [WidgetController::class, 'bootstrap']);
+    Route::post('/chat', [WidgetController::class, 'chat'])->middleware('throttle:widget-chat');
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -36,6 +44,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookings/{booking}', [BookingController::class, 'show']);
     Route::patch('/bookings/{booking}/status', [BookingController::class, 'updateStatus']);
     Route::patch('/bookings/{booking}/reschedule', [BookingController::class, 'reschedule']);
+
+    Route::get('/conversations', [ConversationController::class, 'index']);
+    Route::get('/conversations/{conversation}', [ConversationController::class, 'show']);
 
     Route::get('/customers/lookup', [CustomerController::class, 'lookup']);
     Route::get('/customers', [CustomerController::class, 'index']);

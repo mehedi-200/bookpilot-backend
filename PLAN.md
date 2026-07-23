@@ -237,22 +237,22 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 ## Feature 6 — AI Agent (Claude tool-calling) — `feature/ai-agent` ⭐ core
 
 ### 6.1 API: conversation storage
-- [ ] `conversations` (customer_name/phone captured, status: active|ended|handed_off, last_activity_at) + `messages` (role: user|assistant|tool, content, tool_name, tool_payload JSON)
-- [ ] Dashboard read endpoints: paginated index + detail with full transcript (ConversationResource)
+- [x] `conversations` (customer_name/phone captured, status: active|ended|handed_off, last_activity_at) + `messages` (role: user|assistant|tool, content, tool_name, tool_payload JSON)
+- [x] Dashboard read endpoints: paginated index + detail with full transcript (ConversationResource)
 
 ### 6.2 API: agent core
-- [ ] `AgentService`: Claude API loop (model `claude-sonnet-5`) — history + tool defs → execute requested tool → feed result back → repeat until final text; max-iteration cap
-- [ ] Tools delegate to existing Services: `list_services` · `check_availability` · `create_booking` · `reschedule_booking` · `cancel_booking` · `handoff_to_human`
-- [ ] System prompt from business profile + hours; guardrails: booking topics only, never invent slots, always confirm before booking
-- [ ] `config/bookpilot.php` (API key from `.env`, model, max tokens); API errors ⇒ graceful fallback message + logged
+- [x] `AgentService`: Claude API loop (model `claude-sonnet-5`) — history + tool defs → execute requested tool → feed result back → repeat until final text; max-iteration cap
+- [x] Tools delegate to existing Services: `list_services` · `check_availability` · `create_booking` · `reschedule_booking` · `cancel_booking` · `handoff_to_human`
+- [x] System prompt from business profile + hours; guardrails: booking topics only, never invent slots, always confirm before booking
+- [x] `config/bookpilot.php` (API key from `.env`, model, max tokens); API errors ⇒ graceful fallback message + logged
 
 ### 6.3 API: public widget endpoints
-- [ ] `widget_key` auth middleware + per-conversation rate limiting (throttle)
-- [ ] `POST /api/widget/chat` (message + conversation token → agent reply), `GET /api/widget/bootstrap` (business name, services, hours)
+- [x] `widget_key` auth middleware + per-conversation rate limiting (throttle)
+- [x] `POST /api/widget/chat` (message + conversation token → agent reply), `GET /api/widget/bootstrap` (business name, services, hours)
 
 ### 6.4 Frontend: conversations pages
-- [ ] Conversations list per fixed UI + `conversationService.js` + hooks
-- [ ] Conversation detail: transcript with collapsible tool-call rows, linked booking chips, handoff banner
+- [x] Conversations list per fixed UI + `conversationService.js` + hooks
+- [x] Conversation detail: transcript with collapsible tool-call rows, linked booking chips, handoff banner
 
 ---
 

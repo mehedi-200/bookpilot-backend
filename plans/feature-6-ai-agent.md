@@ -73,9 +73,9 @@ Dashboard endpoints (sanctum): `GET /api/conversations` (paginated, `?status=`, 
 6. FE conversations list + transcript view.
 
 ## ✅ Check before closing the feature
-- [ ] Mocked-loop tests: text-only, single tool, chained tools (availability→confirm→create), invalid tool input recovers, iteration cap → handoff, API error → handoff + friendly reply
-- [ ] create_booking respects auto_confirm both ways; cancel tool cannot touch other phones' bookings
-- [ ] Rate limits return the standard ApiResponse 429 shape
+- [x] Mocked-loop tests: text-only, single tool, chained tools (availability→confirm→create), invalid tool input recovers, iteration cap → handoff, API error → handoff + friendly reply
+- [x] create_booking respects auto_confirm both ways; cancel tool cannot touch other phones' bookings
+- [x] Rate limits return the standard ApiResponse 429 shape
 - [ ] Real-API smoke: book, reschedule, cancel, off-topic question politely redirected, no invented slots (spot-check transcripts)
 - [ ] Transcript UI: tool rows collapsed by default, expand cleanly, booking chips navigate
-- [ ] Token usage visible per conversation (sum in detail header) — cost sanity
+- [x] Token usage visible per conversation (sum in detail header) — cost sanity
