@@ -20,7 +20,7 @@
 
 ### 10.1 CI
 - [x] GitHub Actions (both repos): backend — php setup, mysql service, `php artisan test`; frontend — `npm ci`, lint, `npm run build` + `build:widget`
-- [x] Badges in both READMEs; branch protection: PRs into `develop` require green CI
+- [~] Badges in both READMEs; branch protection: PRs into `develop` require green CI
 
 ### 10.2 Seed data (demo-quality, not lorem)
 - [x] 1 admin + 2 staff · business "Rahim's Garage" with realistic hours (Fri closed) · 8 services with real names/prices
@@ -28,8 +28,8 @@
 - [x] `php artisan migrate:fresh --seed` = instant demo environment
 
 ### 10.3 Polish pass (the "check it properly" sweep — do this BEFORE screenshots)
-- [x] Click through every page × 3 themes × 3 breakpoints; fix every EmptyState, Skeleton, overflow, and spacing miss against CLAUDE.md rule 8
-- [x] Loading: no layout jumps (skeleton dimensions = content dimensions); Errors: every mutation shows a toast, every failed list shows retry
+- [ ] Click through every page × 3 themes × 3 breakpoints; fix every EmptyState, Skeleton, overflow, and spacing miss against CLAUDE.md rule 8
+- [ ] Loading: no layout jumps (skeleton dimensions = content dimensions); Errors: every mutation shows a toast, every failed list shows retry
 - [x] Friendly-time util used everywhere (no raw `2026-07-23 10:30:00` anywhere in the UI)
 - [ ] Lighthouse mobile pass on dashboard + bookings (no red scores); widget bundle budget re-checked
 - [x] `npm run lint` + `pint` clean; dead code and unused deps removed

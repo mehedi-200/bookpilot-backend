@@ -1,5 +1,7 @@
 # bookpilot-backend
 
+[![tests](https://github.com/mehedi-200/bookpilot-backend/actions/workflows/tests.yml/badge.svg)](https://github.com/mehedi-200/bookpilot-backend/actions/workflows/tests.yml)
+
 BookPilot API — an AI booking agent for small businesses. Customers chat with a
 Claude-powered assistant that checks real availability and books appointments;
 owners manage everything from a dashboard. Confirmed bookings can sync into
