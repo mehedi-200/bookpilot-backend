@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Jobs\SyncBookingToGarageFlow;
 use App\Models\Booking;
 use App\Models\Customer;
+use App\Models\Integration;
 use App\Models\Service;
 use App\Support\PhoneNumber;
 use Carbon\CarbonImmutable;
@@ -95,7 +97,12 @@ class BookingService
 
         $booking->save();
 
-        // Feature 8 hooks GarageFlow sync onto the confirmed transition here.
+        // Confirming is the trigger for GarageFlow. Queued on purpose: the
+        // customer's confirmation must never wait on someone else's API.
+        if ($status === Booking::STATUS_CONFIRMED && Integration::garageflow()->isReady()) {
+            $booking->forceFill(['sync_status' => 'pending'])->save();
+            SyncBookingToGarageFlow::dispatch($booking->id);
+        }
 
         return $booking->fresh(['customer', 'service']);
     }
