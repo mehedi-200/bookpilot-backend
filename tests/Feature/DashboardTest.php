@@ -33,6 +33,7 @@ class DashboardTest extends TestCase
                     'upcoming',
                     'by_status' => ['pending', 'confirmed', 'completed', 'cancelled'],
                     'ai_share' => ['ai', 'manual', 'percent'],
+                    'series' => [['date', 'label', 'ai', 'manual', 'total', 'is_today']],
                     'setup_state' => ['hours_set', 'has_services', 'widget_embedded'],
                 ],
             ]);
@@ -75,6 +76,31 @@ class DashboardTest extends TestCase
         $this->assertCount(1, $data['today']);                // cancelled excluded
         $this->assertSame(1, $data['by_status']['cancelled']);
         $this->assertSame(1, $data['needs_attention']['pending']);
+    }
+
+    public function test_series_covers_fifteen_days_and_buckets_by_source(): void
+    {
+        $customer = Customer::factory()->create();
+        $service = Service::factory()->create();
+
+        Booking::factory()->fromWidget()->create([
+            'customer_id' => $customer->id, 'service_id' => $service->id,
+            'starts_at' => '2026-07-27 10:00:00', 'ends_at' => '2026-07-27 11:00:00',
+        ]);
+        Booking::factory()->create([
+            'customer_id' => $customer->id, 'service_id' => $service->id,
+            'starts_at' => '2026-07-27 14:00:00', 'ends_at' => '2026-07-27 15:00:00',
+        ]);
+
+        $series = $this->actingAs(User::factory()->create())
+            ->getJson('/api/dashboard')->json('data.series');
+
+        $this->assertCount(15, $series); // 6 back, today, 8 forward
+        $today = collect($series)->firstWhere('is_today', true);
+        $this->assertSame('2026-07-27', $today['date']);
+        $this->assertSame(1, $today['ai']);
+        $this->assertSame(1, $today['manual']);
+        $this->assertSame(2, $today['total']);
     }
 
     public function test_ai_share_is_the_percentage_of_widget_bookings(): void
