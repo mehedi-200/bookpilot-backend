@@ -12,6 +12,7 @@ class CustomerService
     public function paginate(array $filters): LengthAwarePaginator
     {
         return Customer::query()
+            ->withCount('bookings')
             ->when($filters['q'] ?? null, function ($query, $q) {
                 $normalized = PhoneNumber::normalize($q);
                 $query->where(fn ($w) => $w

@@ -42,6 +42,9 @@ class CustomerController extends Controller
 
     public function show(Customer $customer): JsonResponse
     {
+        // One request for the whole timeline page.
+        $customer->loadCount('bookings')->load(['bookings' => fn ($q) => $q->with('service')->limit(10)]);
+
         return $this->sendSuccess(new CustomerResource($customer));
     }
 
