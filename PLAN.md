@@ -286,7 +286,7 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 ## Feature 9 — Dashboard, Search & Notifications — `feature/dashboard`
 
 ### 9.1 API: dashboard
-- [ ] `GET /api/dashboard` (single DashboardService): bookings today/week, pending count, active conversations, AI-booked % (month), upcoming bookings, bookings-by-status
+- [x] `GET /api/dashboard` (single DashboardService): bookings today/week, pending count, active conversations, AI-booked % (month), upcoming bookings, bookings-by-status
 
 ### 9.2 API: master search
 - [ ] `GET /api/search?q=` → grouped: bookings (ref/customer), customers, conversations — SearchService
@@ -296,7 +296,7 @@ This UI is **decided and locked**. Every feature below must follow it exactly �
 - [ ] Triggers in Services: new AI booking, booking cancelled, handoff to human, GarageFlow sync failed
 
 ### 9.4 Frontend
-- [ ] Dashboard page per fixed UI (stat cards, upcoming list, AI/manual breakdown); post-login landing
+- [x] Dashboard page per fixed UI (stat cards, upcoming list, AI/manual breakdown); post-login landing
 - [ ] Master search: debounced grouped dropdown (desktop) / full-screen page (mobile)
 - [ ] Bell + badge, notification panel/sheet, mark-as-read, TanStack Query polling
 

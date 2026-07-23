@@ -5,6 +5,7 @@ use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -25,6 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/business', [BusinessController::class, 'show']);
     Route::get('/services', [ServiceController::class, 'index']);
     Route::get('/working-hours', [WorkingHourController::class, 'index']);
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 
     Route::get('/availability', [AvailabilityController::class, 'index']);
 
